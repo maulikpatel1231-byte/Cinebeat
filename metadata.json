@@ -1,0 +1,6 @@
+{
+  "name": "CineBeat AI",
+  "description": "1-Tap Cinematic AI Video Editor with Beat-Sync Transitions, Auto Color Grading, and Frame Interpolation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

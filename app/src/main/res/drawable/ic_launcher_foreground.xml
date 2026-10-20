@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Clapperboard body -->
+    <path
+        android:pathData="M30,44 L78,44 A4,4 0 0,1 82,48 L82,74 A4,4 0 0,1 78,78 L30,78 A4,4 0 0,1 26,74 L26,48 A4,4 0 0,1 30,44 Z"
+        android:fillColor="#1E293B"
+        android:strokeWidth="1.5"
+        android:strokeColor="#38BDF8" />
+
+    <!-- Clapperboard top hinge bar -->
+    <path
+        android:pathData="M27,33 L81,33 A3,3 0 0,1 84,36 L84,41 A1,1 0 0,1 83,42 L25,42 A1,1 0 0,1 24,41 L24,36 A3,3 0 0,1 27,33 Z"
+        android:fillColor="#0F172A"
+        android:strokeWidth="1.5"
+        android:strokeColor="#F59E0B" />
+
+    <!-- Clapper diagonal stripes -->
+    <path
+        android:pathData="M34,33 L40,33 L35,42 L29,42 Z"
+        android:fillColor="#F59E0B" />
+    <path
+        android:pathData="M48,33 L54,33 L49,42 L43,42 Z"
+        android:fillColor="#38BDF8" />
+    <path
+        android:pathData="M62,33 L68,33 L63,42 L57,42 Z"
+        android:fillColor="#F59E0B" />
+    <path
+        android:pathData="M76,33 L82,33 L77,42 L71,42 Z"
+        android:fillColor="#38BDF8" />
+
+    <!-- Audio beat wave equalizer in the center of slate -->
+    <!-- Bar 1 -->
+    <path
+        android:pathData="M33,63 L33,59"
+        android:strokeWidth="2.5"
+        android:strokeColor="#06B6D4"
+        android:strokeLineCap="round" />
+    <!-- Bar 2 -->
+    <path
+        android:pathData="M39,67 L39,55"
+        android:strokeWidth="2.5"
+        android:strokeColor="#38BDF8"
+        android:strokeLineCap="round" />
+    <!-- Bar 3 (Peak) -->
+    <path
+        android:pathData="M45,71 L45,51"
+        android:strokeWidth="3.0"
+        android:strokeColor="#F59E0B"
+        android:strokeLineCap="round" />
+    <!-- Center Play/Cut Triangle -->
+    <path
+        android:pathData="M52,54 L62,61 L52,68 Z"
+        android:fillColor="#FACC15" />
+    <!-- Bar 4 (Peak) -->
+    <path
+        android:pathData="M69,71 L69,51"
+        android:strokeWidth="3.0"
+        android:strokeColor="#F59E0B"
+        android:strokeLineCap="round" />
+    <!-- Bar 5 -->
+    <path
+        android:pathData="M75,67 L75,55"
+        android:strokeWidth="2.5"
+        android:strokeColor="#38BDF8"
+        android:strokeLineCap="round" />
+
+    <!-- AI Star Sparkle top-right -->
+    <path
+        android:pathData="M78,27 C78,30 81,31 83,31 C81,31 78,32 78,35 C78,32 75,31 73,31 C75,31 78,30 78,27 Z"
+        android:fillColor="#67E8F9" />
+</vector>
