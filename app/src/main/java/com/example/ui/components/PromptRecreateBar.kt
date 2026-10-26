@@ -69,11 +69,13 @@ fun PromptRecreateBar(
     val focusManager = LocalFocusManager.current
 
     val suggestionChips = listOf(
+        "🇮🇳 Bollywood Action Slow-Mo & Bass Drop",
+        "💃 Gujarati Garba Fast Swirls & Dhol Cuts",
+        "✨ Royal Shaadi Cinematic Warm Glow",
+        "🪕 Gujarati Timli Fast Speed-Ramp 145 BPM",
+        "🌧️ Mumbai Monsoon Moody Teal & Orange",
         "🔥 Fast Phonk Beat-Cuts & Speed Ramp",
-        "🌅 Warm Golden Hour Sunset with Soft Glow",
-        "🌆 Cyberpunk Neon Glitch with Bass Drops",
-        "🎬 35mm Hollywood Vintage Film Grain",
-        "⚡ 120 FPS Ultra Slow-Mo Climax",
+        "🎬 35mm Vintage Celluloid Film Grain",
         "🖤 Dark Noir Black & White Drama"
     )
 
@@ -100,7 +102,7 @@ fun PromptRecreateBar(
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
-                    text = "AI Custom Prompt & Recreate",
+                    text = "AI-Based Video Editing With Prompt",
                     color = TextPrimary,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Bold
@@ -108,15 +110,16 @@ fun PromptRecreateBar(
             }
 
             Text(
-                text = "Natural Language Editing",
-                color = TextSecondary,
-                fontSize = 10.sp
+                text = "Hindi / Gujarati / English",
+                color = CyanAccent,
+                fontSize = 10.sp,
+                fontWeight = FontWeight.SemiBold
             )
         }
 
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = "No complex timeline knobs needed. Describe what to change, or tap Recreate for a fresh cut!",
+            text = "Type any creative prompt or select a style below. AI analyzes your prompt to cut, grade, and pace your video automatically!",
             color = TextMuted,
             fontSize = 11.sp
         )
@@ -133,7 +136,7 @@ fun PromptRecreateBar(
                 onValueChange = onPromptChange,
                 placeholder = {
                     Text(
-                        text = "e.g. Make it darker with neon lights & fast zoom glitch on drops...",
+                        text = "e.g. Gujarati Garba fast swirls with dhol beats, or Bollywood dramatic slow-mo...",
                         color = TextMuted,
                         fontSize = 12.sp
                     )

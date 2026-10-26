@@ -45,8 +45,28 @@ class ExampleUnitTest {
     }
 
     @Test
+    fun testBollywoodAndGujaratiDirectorGuidance() {
+        val director = GeminiVideoDirectorService()
+        val garbaGuidance = director.localFallbackDirector(
+            prompt = "Gujarati Garba fast swirls with dhol beat cuts",
+            genre = "Gujarati Garba",
+            clipCount = 3
+        )
+        assertEquals("Garba Raas Cut", garbaGuidance.title)
+        assertTrue(garbaGuidance.deepThinking.directorVision.contains("Gujarati"))
+
+        val bollywoodGuidance = director.localFallbackDirector(
+            prompt = "Bollywood action hero entry with dholak bass drop",
+            genre = "Bollywood Hindi",
+            clipCount = 3
+        )
+        assertEquals("Bollywood Cinematic Cut", bollywoodGuidance.title)
+        assertTrue(bollywoodGuidance.deepThinking.directorVision.contains("Bollywood"))
+    }
+
+    @Test
     fun testPresetRepositoryHasPresets() {
-        assertTrue(PresetRepository.sampleClips.isNotEmpty())
+        assertTrue(PresetRepository.sampleClips.isEmpty()) // Demo videos removed for clean user start
         assertTrue(PresetRepository.beatTracks.isNotEmpty())
         assertTrue(PresetRepository.colorGradePresets.isNotEmpty())
     }

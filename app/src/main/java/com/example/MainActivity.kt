@@ -103,6 +103,16 @@ fun CineBeatApp(viewModel: CineBeatViewModel = viewModel()) {
         }
     }
 
+    // Audio file picker for custom Hindi Bollywood & Gujarati songs
+    val audioPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri ->
+        if (uri != null) {
+            viewModel.importCustomAudio(uri, context)
+            Toast.makeText(context, "Song added and synced!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     LaunchedEffect(uiState.exportSuccessMessage) {
         uiState.exportSuccessMessage?.let { msg ->
             snackbarHostState.showSnackbar(msg)
@@ -221,25 +231,27 @@ fun CineBeatApp(viewModel: CineBeatViewModel = viewModel()) {
                     }
                 }
 
-                // 1. Interactive Cinematic Player (The Output Master)
+                // 1. Interactive Cinematic Preview Window
                 item {
-                    val plan = uiState.currentPlan
-                    if (plan != null) {
-                        CinematicPlayerView(
-                            plan = plan,
-                            availableClips = uiState.availableClips,
-                            activeSegmentIndex = uiState.currentActiveSegmentIndex,
-                            playbackPositionMs = uiState.playbackPositionMs,
-                            isPlaying = uiState.isPlaying,
-                            isAudioMuted = uiState.isAudioMuted,
-                            isBeatPulseTriggered = uiState.isBeatPulseTriggered,
-                            aspectRatio = uiState.selectedAspectRatio,
-                            onTogglePlayPause = { viewModel.togglePlayPause() },
-                            onSeekTo = { viewModel.seekTo(it) },
-                            onToggleAspectRatio = { viewModel.toggleAspectRatio() },
-                            onToggleAudio = { viewModel.toggleAudio() }
-                        )
-                    }
+                    CinematicPlayerView(
+                        plan = uiState.currentPlan,
+                        availableClips = uiState.selectedClips,
+                        activeSegmentIndex = uiState.currentActiveSegmentIndex,
+                        playbackPositionMs = uiState.playbackPositionMs,
+                        isPlaying = uiState.isPlaying,
+                        isAudioMuted = uiState.isAudioMuted,
+                        isBeatPulseTriggered = uiState.isBeatPulseTriggered,
+                        aspectRatio = uiState.selectedAspectRatio,
+                        onTogglePlayPause = { viewModel.togglePlayPause() },
+                        onSeekTo = { viewModel.seekTo(it) },
+                        onToggleAspectRatio = { viewModel.toggleAspectRatio() },
+                        onToggleAudio = { viewModel.toggleAudio() },
+                        onAddClipsClick = {
+                            videoPickerLauncher.launch(
+                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.VideoOnly)
+                            )
+                        }
+                    )
                 }
 
                 // AI Director Deep Thinking Breakdown
@@ -268,7 +280,8 @@ fun CineBeatApp(viewModel: CineBeatViewModel = viewModel()) {
                     AudioTrackSelector(
                         tracks = uiState.availableTracks,
                         selectedTrack = uiState.selectedTrack,
-                        onSelectTrack = { viewModel.selectTrack(it) }
+                        onSelectTrack = { viewModel.selectTrack(it) },
+                        onAddCustomSongClick = { audioPickerLauncher.launch("audio/*") }
                     )
                 }
 
@@ -313,7 +326,7 @@ fun CineBeatApp(viewModel: CineBeatViewModel = viewModel()) {
                         viewModel.dismissExportMessage()
                     },
                     onStartExport = { quality ->
-                        viewModel.exportMasterVideo(quality, context)
+                        viewModel.exportCinematicVideo(quality, context)
                     }
                 )
             }

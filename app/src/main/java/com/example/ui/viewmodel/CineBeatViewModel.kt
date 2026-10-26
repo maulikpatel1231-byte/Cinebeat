@@ -55,8 +55,8 @@ class CineBeatViewModel : ViewModel() {
 
     private val _uiState = MutableStateFlow(
         CineBeatUiState(
-            availableClips = PresetRepository.sampleClips,
-            selectedClips = PresetRepository.sampleClips.take(4),
+            availableClips = emptyList(),
+            selectedClips = emptyList(),
             availableTracks = PresetRepository.beatTracks,
             selectedTrack = PresetRepository.beatTracks[0]
         )
@@ -66,8 +66,7 @@ class CineBeatViewModel : ViewModel() {
     private var playbackLoopJob: Job? = null
 
     init {
-        // Auto-generate an initial cinematic cut so the app opens into a stunning ready-to-play preview
-        generateCinematicCut(prompt = "Cinematic blockbuster with vibrant teal and orange grade")
+        // App launches cleanly ready for user's own videos (demo videos removed)
     }
 
     fun addSelectedClip(clip: VideoClip) {
@@ -75,20 +74,34 @@ class CineBeatViewModel : ViewModel() {
         if (!current.any { it.id == clip.id }) {
             current.add(clip)
             _uiState.value = _uiState.value.copy(selectedClips = current)
+            generateCinematicCut()
         }
     }
 
     fun removeSelectedClip(clipId: String) {
         val current = _uiState.value.selectedClips.toMutableList()
         current.removeAll { it.id == clipId }
-        _uiState.value = _uiState.value.copy(selectedClips = current)
+        if (current.isEmpty()) {
+            stopPlayback()
+            _uiState.value = _uiState.value.copy(
+                selectedClips = emptyList(),
+                currentPlan = null,
+                isPlaying = false,
+                playbackPositionMs = 0L,
+                currentActiveSegmentIndex = 0
+            )
+        } else {
+            _uiState.value = _uiState.value.copy(selectedClips = current)
+            generateCinematicCut()
+        }
     }
 
     fun importUserVideos(uris: List<Uri>, context: Context) {
+        if (uris.isEmpty()) return
         val imported = uris.mapIndexed { index, uri ->
             VideoClip(
                 id = "user_${UUID.randomUUID()}",
-                title = "Device Video ${index + 1}",
+                title = "Video Clip ${index + 1}",
                 durationMs = 6000L,
                 thumbnailUrl = uri.toString(),
                 uriString = uri.toString(),
@@ -102,12 +115,14 @@ class CineBeatViewModel : ViewModel() {
             availableClips = updatedAvailable,
             selectedClips = updatedSelected
         )
+        // Automatically generate cinematic cut so the preview window immediately shows the edited video
+        generateCinematicCut()
     }
 
     fun selectTrack(track: BeatTrack) {
         _uiState.value = _uiState.value.copy(selectedTrack = track)
-        // If plan is already created, update it with new track beats
-        _uiState.value.currentPlan?.let {
+        // If plan is already created or clips exist, update cut with new track beats
+        if (_uiState.value.selectedClips.isNotEmpty()) {
             generateCinematicCut(prompt = _uiState.value.currentPrompt.ifBlank { null })
         }
     }
@@ -121,7 +136,18 @@ class CineBeatViewModel : ViewModel() {
      * Takes clips + beat track + prompt, runs AI director, and assembles the video.
      */
     fun generateCinematicCut(prompt: String? = null) {
-        val clips = _uiState.value.selectedClips.ifEmpty { PresetRepository.sampleClips.take(3) }
+        val clips = _uiState.value.selectedClips
+        if (clips.isEmpty()) {
+            stopPlayback()
+            _uiState.value = _uiState.value.copy(
+                currentPlan = null,
+                isPlaying = false,
+                isGenerating = false,
+                playbackPositionMs = 0L,
+                currentActiveSegmentIndex = 0
+            )
+            return
+        }
         val track = _uiState.value.selectedTrack
         val activePrompt = prompt ?: _uiState.value.currentPrompt
 
@@ -236,8 +262,9 @@ class CineBeatViewModel : ViewModel() {
     fun recreateCut() {
         val current = _uiState.value.currentPlan ?: return
         val clips = _uiState.value.selectedClips.shuffled()
+        if (clips.isEmpty()) return
         val availableLuts = PresetRepository.colorGradePresets
-        val nextLut = availableLuts.filter { it.id != current.colorGrade.id }.random()
+        val nextLut = availableLuts.filter { it.id != current.colorGrade.id }.randomOrNull() ?: availableLuts.first()
 
         stopPlayback()
         viewModelScope.launch {
@@ -408,7 +435,45 @@ class CineBeatViewModel : ViewModel() {
         }
     }
 
-    fun exportMasterVideo(quality: String, context: Context) {
+    fun importCustomAudio(uri: Uri, context: Context) {
+        var fileName = "Custom Song"
+        try {
+            val cursor = context.contentResolver.query(uri, null, null, null, null)
+            cursor?.use {
+                if (it.moveToFirst()) {
+                    val nameIndex = it.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME)
+                    if (nameIndex != -1) {
+                        fileName = it.getString(nameIndex) ?: "Custom Song"
+                    }
+                }
+            }
+        } catch (_: Exception) {}
+
+        val cleanTitle = fileName.substringBeforeLast(".")
+
+        val customTrack = BeatTrack(
+            id = "custom_${UUID.randomUUID()}",
+            title = cleanTitle,
+            artist = "My Music",
+            bpm = 132,
+            genre = "Custom Bollywood / Gujarati Track",
+            durationMs = 45_000L,
+            moodColorHex = "#F59E0B",
+            category = com.example.data.model.SongCategory.CUSTOM,
+            uriString = uri.toString()
+        )
+
+        val updatedTracks = listOf(customTrack) + _uiState.value.availableTracks
+        _uiState.value = _uiState.value.copy(
+            availableTracks = updatedTracks,
+            selectedTrack = customTrack
+        )
+
+        // Regenerate cut with the new custom song
+        generateCinematicCut(prompt = _uiState.value.currentPrompt.ifBlank { null })
+    }
+
+    fun exportCinematicVideo(quality: String, context: Context) {
         val plan = _uiState.value.currentPlan ?: return
         stopPlayback()
 
@@ -422,13 +487,13 @@ class CineBeatViewModel : ViewModel() {
                 _uiState.value = _uiState.value.copy(exportProgress = i.toFloat() / steps)
             }
 
-            // Save video metadata / mock master export file to app's external files directory
+            // Save video metadata to app's cache/exports directory
             try {
                 val outputDir = File(context.cacheDir, "exports")
                 outputDir.mkdirs()
                 val exportFile = File(outputDir, "CineBeat_${System.currentTimeMillis()}_${quality.replace(" ", "_")}.mp4")
                 FileOutputStream(exportFile).use { fos ->
-                    val banner = "CineBeat AI Master Export\nTitle: ${plan.title}\nColor LUT: ${plan.colorGrade.name}\nFPS: ${plan.interpolationMode.label}\nAspect: ${plan.aspectRatio.label}\nTrack: ${plan.track.title} (${plan.track.bpm} BPM)\n"
+                    val banner = "CineBeat AI Video Export\nTitle: ${plan.title}\nColor LUT: ${plan.colorGrade.name}\nFPS: ${plan.interpolationMode.label}\nAspect: ${plan.aspectRatio.label}\nTrack: ${plan.track.title} (${plan.track.bpm} BPM)\n"
                     fos.write(banner.toByteArray())
                 }
                 _uiState.value = _uiState.value.copy(
@@ -443,6 +508,9 @@ class CineBeatViewModel : ViewModel() {
             }
         }
     }
+
+    // Retain legacy method name for compatibility
+    fun exportMasterVideo(quality: String, context: Context) = exportCinematicVideo(quality, context)
 
     fun dismissExportMessage() {
         _uiState.value = _uiState.value.copy(exportSuccessMessage = null)

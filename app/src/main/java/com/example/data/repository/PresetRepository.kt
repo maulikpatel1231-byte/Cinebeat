@@ -6,50 +6,115 @@ import com.example.data.model.VideoClip
 
 object PresetRepository {
 
-    val sampleClips = listOf(
-        VideoClip(
-            id = "clip_drone_mountain",
-            title = "Alpine Peak Drone",
-            durationMs = 6000L,
-            thumbnailUrl = "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&auto=format&fit=crop&q=80",
-            locationOrTag = "4K Aerial Pan",
-            isSample = true
-        ),
-        VideoClip(
-            id = "clip_tokyo_neon",
-            title = "Tokyo Neon Night Drift",
-            durationMs = 5500L,
-            thumbnailUrl = "https://images.unsplash.com/photo-1514565131-fce0801e5785?w=600&auto=format&fit=crop&q=80",
-            locationOrTag = "City Night Lights",
-            isSample = true
-        ),
-        VideoClip(
-            id = "clip_coastal_sunset",
-            title = "Golden Coast Highway",
-            durationMs = 7000L,
-            thumbnailUrl = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop&q=80",
-            locationOrTag = "Golden Hour Run",
-            isSample = true
-        ),
-        VideoClip(
-            id = "clip_cyber_runner",
-            title = "Futuristic Cyber Corridor",
-            durationMs = 5000L,
-            thumbnailUrl = "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600&auto=format&fit=crop&q=80",
-            locationOrTag = "Dynamic Motion",
-            isSample = true
-        ),
-        VideoClip(
-            id = "clip_monsoon_rain",
-            title = "Monsoon Glass Reflections",
-            durationMs = 6500L,
-            thumbnailUrl = "https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?w=600&auto=format&fit=crop&q=80",
-            locationOrTag = "Cinematic Mood",
-            isSample = true
-        )
-    )
+    // Demo videos removed: User imports their own videos to edit
+    val sampleClips = emptyList<VideoClip>()
 
     val beatTracks = listOf(
+        // --- Bollywood Hindi ---
+        BeatTrack(
+            id = "track_bollywood_dholak",
+            title = "Bollywood Dholak Bass Drop",
+            artist = "Mumbai Beatlab",
+            bpm = 132,
+            genre = "Bollywood Dholak / Bass",
+            durationMs = 30_000L,
+            moodColorHex = "#F59E0B",
+            category = com.example.data.model.SongCategory.BOLLYWOOD
+        ),
+        BeatTrack(
+            id = "track_bollywood_lofi",
+            title = "Tum Hi Ho Chill Re-edit",
+            artist = "Arijit Lofi Vibes",
+            bpm = 92,
+            genre = "Bollywood Romantic Lo-Fi",
+            durationMs = 30_000L,
+            moodColorHex = "#F43F5E",
+            category = com.example.data.model.SongCategory.BOLLYWOOD
+        ),
+        BeatTrack(
+            id = "track_desi_swag",
+            title = "Desi Swag Gully Bass",
+            artist = "Divine Beats",
+            bpm = 128,
+            genre = "Hindi Hip-Hop / Gully",
+            durationMs = 30_000L,
+            moodColorHex = "#06B6D4",
+            category = com.example.data.model.SongCategory.BOLLYWOOD
+        ),
+        BeatTrack(
+            id = "track_punjabi_bhangra",
+            title = "Bhangra Dhol High-Energy",
+            artist = "Punjab Power Beats",
+            bpm = 140,
+            genre = "Punjabi Bollywood Dhol",
+            durationMs = 30_000L,
+            moodColorHex = "#F59E0B",
+            category = com.example.data.model.SongCategory.BOLLYWOOD
+        ),
+        BeatTrack(
+            id = "track_kabira_folk",
+            title = "Kabira Acoustic Soul",
+            artist = "Sufi Cinema Studio",
+            bpm = 105,
+            genre = "Hindi Folk Fusion",
+            durationMs = 30_000L,
+            moodColorHex = "#10B981",
+            category = com.example.data.model.SongCategory.BOLLYWOOD
+        ),
+
+        // --- Gujarati Garba & Timli ---
+        BeatTrack(
+            id = "track_gujarati_chogada",
+            title = "Chogada Tara Garba Beat",
+            artist = "Navratri Dhol Beats",
+            bpm = 136,
+            genre = "Gujarati Garba Dhol",
+            durationMs = 30_000L,
+            moodColorHex = "#E11D48",
+            category = com.example.data.model.SongCategory.GUJARATI
+        ),
+        BeatTrack(
+            id = "track_gujarati_timli",
+            title = "Gujarati Timli Non-Stop",
+            artist = "Dahod Timli King",
+            bpm = 145,
+            genre = "Gujarati Fast Timli",
+            durationMs = 30_000L,
+            moodColorHex = "#F59E0B",
+            category = com.example.data.model.SongCategory.GUJARATI
+        ),
+        BeatTrack(
+            id = "track_gujarati_dholida",
+            title = "Dholida Dhol Beat Drop",
+            artist = "Gujarati Raas Mandli",
+            bpm = 132,
+            genre = "Gujarati Navratri Raas",
+            durationMs = 30_000L,
+            moodColorHex = "#8B5CF6",
+            category = com.example.data.model.SongCategory.GUJARATI
+        ),
+        BeatTrack(
+            id = "track_gujarati_sanedo",
+            title = "Sanedo Folk Fast Claps",
+            artist = "Maniaro Folk Beats",
+            bpm = 138,
+            genre = "Gujarati Sanedo Dance",
+            durationMs = 30_000L,
+            moodColorHex = "#EC4899",
+            category = com.example.data.model.SongCategory.GUJARATI
+        ),
+        BeatTrack(
+            id = "track_gujarati_dandiya",
+            title = "Dandiya Raas Euphoria",
+            artist = "Amdavad Garba Club",
+            bpm = 130,
+            genre = "Gujarati Traditional Raas",
+            durationMs = 30_000L,
+            moodColorHex = "#38BDF8",
+            category = com.example.data.model.SongCategory.GUJARATI
+        ),
+
+        // --- EDM & Phonk ---
         BeatTrack(
             id = "track_phonk_drift",
             title = "Neon Phonk Overdrive",
@@ -57,7 +122,8 @@ object PresetRepository {
             bpm = 138,
             genre = "Phonk / Drift",
             durationMs = 30_000L,
-            moodColorHex = "#EC4899"
+            moodColorHex = "#EC4899",
+            category = com.example.data.model.SongCategory.EDM_PHONK
         ),
         BeatTrack(
             id = "track_cinematic_drop",
@@ -66,16 +132,8 @@ object PresetRepository {
             bpm = 124,
             genre = "Cinematic Orchestral",
             durationMs = 30_000L,
-            moodColorHex = "#38BDF8"
-        ),
-        BeatTrack(
-            id = "track_bollywood_beat",
-            title = "Mumbai Bass Climax",
-            artist = "Desi Sonic Studio",
-            bpm = 130,
-            genre = "High-Energy Percussion",
-            durationMs = 30_000L,
-            moodColorHex = "#F59E0B"
+            moodColorHex = "#38BDF8",
+            category = com.example.data.model.SongCategory.EDM_PHONK
         ),
         BeatTrack(
             id = "track_synthwave_sunset",
@@ -84,16 +142,8 @@ object PresetRepository {
             bpm = 115,
             genre = "Synthwave / Chill",
             durationMs = 30_000L,
-            moodColorHex = "#8B5CF6"
-        ),
-        BeatTrack(
-            id = "track_trap_speed",
-            title = "Tokyo Underground Beat",
-            artist = "SubZero Flow",
-            bpm = 145,
-            genre = "Fast Trap / Ramp",
-            durationMs = 30_000L,
-            moodColorHex = "#10B981"
+            moodColorHex = "#8B5CF6",
+            category = com.example.data.model.SongCategory.EDM_PHONK
         )
     )
 

@@ -144,7 +144,7 @@ class GeminiVideoDirectorService {
                     }
 
                     val title = parsed.optString("title", "Cinematic Cut")
-                    val tagline = parsed.optString("tagline", "Mastered with AI Beat-Sync & Color LUT")
+                    val tagline = parsed.optString("tagline", "Crafted with AI Beat-Sync & Color LUT")
 
                     val shotsJson = parsed.optJSONArray("shotDecisions")
                     val shots = mutableListOf<String>()
@@ -254,16 +254,33 @@ class GeminiVideoDirectorService {
 
         val title = when {
             prompt.isNotBlank() && prompt.length < 25 -> prompt.replaceFirstChar { it.uppercase() }
+            lower.contains("garba") || lower.contains("gujarati") || lower.contains("sanedo") -> "Garba Raas Cut"
+            lower.contains("timli") -> "Timli Fast Beat"
+            lower.contains("bollywood") || lower.contains("desi") || lower.contains("bhangra") -> "Bollywood Cinematic Cut"
+            lower.contains("shaadi") || lower.contains("wedding") -> "Royal Shaadi Glow"
             lower.contains("neon") -> "Neo-Tokyo Velocity"
             lower.contains("sunset") -> "Golden Horizon"
             lower.contains("action") -> "Apex Impact"
-            else -> "Cinema Masterpiece"
+            else -> "Cinematic Cut"
         }
 
         val tagline = "AI Beat-Matched Pacing with ${colorPreset.name}"
 
+        val visionDesc = when {
+            lower.contains("garba") || lower.contains("gujarati") || lower.contains("sanedo") ->
+                "Synthesized vibrant Gujarati folk rhythm with swirling camera transitions and high-energy clap beat drops."
+            lower.contains("timli") ->
+                "Engineered ultra-fast 145 BPM Timli beat matching with high-intensity speed ramps on every drum transient."
+            lower.contains("bollywood") || lower.contains("desi") || lower.contains("bhangra") ->
+                "Crafted high-octane Bollywood cinematic drama with dholak bass drops, dramatic slow-motion entries, and rich color tone."
+            lower.contains("shaadi") || lower.contains("wedding") ->
+                "Applied warm royal wedding cinema aesthetics with golden hour lens flares and emotional slow-mo pacing."
+            else ->
+                "Deconstructed visual tone for '$prompt'. Tuned emotional resonance using dynamic cut frequencies that mirror the $genre rhythm."
+        }
+
         val deepThinking = DeepThinkingReasoning(
-            directorVision = "Deconstructed the visual tone for '$prompt'. Tuned emotional resonance using dynamic cut frequencies that mirror the $genre rhythm.",
+            directorVision = visionDesc,
             rhythmPacingReasoning = "Mapped cut points directly onto musical downbeats (${(60_000f / 130f).toInt()}ms interval). Applied speed-ramp momentum to build anticipation into transitions.",
             colorScienceReasoning = "Calibrated ${colorPreset.name} curve: Contrast at ${colorPreset.contrast}x, saturation boost at ${colorPreset.saturation}x, and organic ${colorPreset.filmGrain}x grain matrix for authentic celluloid depth.",
             opticalFlowReasoning = "Activated ${fpsMode.label} bidirectional motion interpolation. Synthesized in-between frames for judder-free panning and razor-sharp high-motion clarity.",

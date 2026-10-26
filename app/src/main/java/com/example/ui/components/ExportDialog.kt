@@ -69,7 +69,7 @@ fun ExportDialog(
 
     val qualityOptions = listOf(
         "Ultra-HD 4K (60fps)" to "3840x2160 • Max Bitrate • AI Interpolated",
-        "1080p Cinema Master (60fps)" to "1920x1080 • Fast Render • High Fidelity",
+        "1080p Full HD (60fps)" to "1920x1080 • Fast Render • High Fidelity",
         "9:16 Vertical Reel (60fps)" to "1080x1920 • Optimized for Reels & Shorts"
     )
 
@@ -101,7 +101,7 @@ fun ExportDialog(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "Export Cinematic Master",
+                            text = "Export Cinematic Video",
                             color = TextPrimary,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold
@@ -180,7 +180,7 @@ fun ExportDialog(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "Rendering Master File (${(exportProgress * 100).toInt()}%)...",
+                            text = "Rendering Video File (${(exportProgress * 100).toInt()}%)...",
                             color = TextPrimary,
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Medium

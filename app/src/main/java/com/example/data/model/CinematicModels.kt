@@ -10,6 +10,14 @@ data class VideoClip(
     val isSample: Boolean = false
 )
 
+enum class SongCategory(val displayName: String, val icon: String) {
+    ALL("All Songs", "🌟"),
+    BOLLYWOOD("Bollywood Hindi", "🎬"),
+    GUJARATI("Gujarati Folk & Garba", "🪕"),
+    EDM_PHONK("Phonk & EDM", "⚡"),
+    CUSTOM("Custom Added", "📁")
+}
+
 data class BeatTrack(
     val id: String,
     val title: String,
@@ -18,7 +26,9 @@ data class BeatTrack(
     val genre: String,
     val durationMs: Long,
     val beatIntervalMs: Long = (60_000L / bpm),
-    val moodColorHex: String = "#06B6D4"
+    val moodColorHex: String = "#06B6D4",
+    val category: SongCategory = SongCategory.ALL,
+    val uriString: String? = null
 ) {
     // Generates beat timestamps up to duration
     fun generateBeats(targetDurationMs: Long): List<Long> {

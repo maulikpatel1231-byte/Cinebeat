@@ -140,6 +140,37 @@ fun ClipStripView(
                 }
             }
 
+            // Empty state guidance banner
+            if (selectedClips.isEmpty()) {
+                item {
+                    Box(
+                        modifier = Modifier
+                            .height(96.dp)
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(CinemaSurface)
+                            .border(1.dp, CinemaBorder, RoundedCornerShape(12.dp))
+                            .clickable(onClick = onAddClipsClick)
+                            .padding(horizontal = 16.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(
+                                text = "No video clips added yet",
+                                color = TextPrimary,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = "Tap '+ Add' to select videos from your gallery to edit",
+                                color = TextSecondary,
+                                fontSize = 10.sp
+                            )
+                        }
+                    }
+                }
+            }
+
             // List of selected clips
             items(selectedClips, key = { it.id }) { clip ->
                 Box(
